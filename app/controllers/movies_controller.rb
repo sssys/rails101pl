@@ -18,6 +18,16 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  def edit
+    @movie = Movie.find(params[:id])
+  end
+
+  def update
+    @movie = Movie.find(params[:id])
+    @movie.update
+    redirect_to movies_path, notice: "Update Success"
+  end
+
   private
 
   def movie_params
