@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :authenticate_user! , only: [:new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user! , only: [:new, :create, :edit, :update, :destroy, :favorite, :unfavorite]
   before_action :find_movie_and_check_permission , only: [:edit, :update, :destroy]
   def index
     @movies = Movie.all
@@ -39,6 +39,29 @@ class MoviesController < ApplicationController
   def destroy
     @movie.destroy
     redirect_to movies_path, alert: "Movie Deleted"
+  end
+
+  def favorite
+    @movie = Movie.find(params[:id])
+
+    if !current_user.is_member_of?(@movie)
+      current_user.favorite!(@movie)
+      flash[:notice] = "收藏电影成功！"
+    else
+      flash[:warning] = "已经收藏此过电影了！"
+    end
+    redirect_to movie_path(@movie)
+  end
+
+  def unfavorite
+    @movie = Movie.find(params[:id])
+    if current_user.is_member_of?(@movie)
+      current_user.unfavorite!(@movie)
+      flash[:alert] = "已取消收藏此电影！"
+    else
+      flash[:warning] = "你从未收藏此电影，怎么取消收藏"
+    end
+    redirect_to movie_path(@movie)
   end
 
   private

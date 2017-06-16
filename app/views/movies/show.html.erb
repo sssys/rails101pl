@@ -5,8 +5,10 @@
     <span class="pull-right">
       <% if current_user && current_user.is_member_of?(@movie) %>
       <label class="label label-success">收藏电影</label>
+      <%= link_to("Unfavorite Movie", unfavorite_movie_path, method: :post, class: "btn btn-default")%>
       <% else %>
       <label class="label label-warning">未收藏电影</label>
+      <%= link_to("Favorite Movie", favorite_movie_path, method: :post, class: "btn btn-default")%>
       <% end %>
     </span>
 
