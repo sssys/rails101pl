@@ -1,9 +1,9 @@
 <div class="col-md-12">
   <div class="group">
-    <%= link_to("Write a review", new_movie_review_path(@movie), class: "btn btn-default pull-right")%>
 
     <span class="pull-right">
       <% if current_user && current_user.is_member_of?(@movie) %>
+      <%= link_to("Write a review", new_movie_review_path(@movie), class: "btn btn-default pull-right")%>
       <label class="label label-success">收藏电影</label>
       <%= link_to("Unfavorite Movie", unfavorite_movie_path, method: :post, class: "btn btn-default")%>
       <% else %>
