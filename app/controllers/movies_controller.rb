@@ -33,6 +33,9 @@ class MoviesController < ApplicationController
 
   def update
     @movie = Movie.find(params[:id])
+    if current_user != @movie.user
+      redirect_to root_path, alert: "You have no permission."
+    end
     if @movie.update(movie_params)
     redirect_to movies_path, notice: "Update Success"
   else
