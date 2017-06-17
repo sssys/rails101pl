@@ -1,6 +1,7 @@
 class ReviewsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :find_movie_and_check_permission, only: [:new, :create]
+  before_action :find_review_and_check_permission, only: [:edit, :update, :destroy]
 
   def new
     @review = Review.new
@@ -8,7 +9,6 @@ class ReviewsController < ApplicationController
 
   def edit
     @movie = Movie.find(params[:movie_id])
-    @review = Review.find(params[:id])
   end
 
   def create
@@ -25,7 +25,6 @@ class ReviewsController < ApplicationController
 
   def update
     @movie = Movie.find(params[:movie_id])
-    @review = Review.find(params[:id])
     if @review.update(review_params)
       redirect_to account_reviews_path, notice: "Update Success"
     else
@@ -34,7 +33,6 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    @review = Review.find(params[:id])
     @review.destroy
     redirect_to account_reviews_path, alert: "Review Delete"
   end
@@ -51,5 +49,12 @@ class ReviewsController < ApplicationController
       redirect_to movie_path(@movie), alert: "You need to favorite the movie before you write a review."
     end
   end
+
+  def find_review_and_check_permission
+    if current_user != @review.user
+      redirect_to root_path, alert: "You have no permission"
+    end
+  end
+
 
 end
