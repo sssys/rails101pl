@@ -30,7 +30,7 @@
     <tbody>
       <% @reviews.recent.each do |review| %>
       <tr>
-        <td><%= simple_format(review.content) %></td>
+        <td><%= render_review_content(review) %></td>
         <td><%= review.user.email %></td>
         <th><%= review.created_at %></td>
         </tr>
